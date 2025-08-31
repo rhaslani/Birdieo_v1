@@ -254,11 +254,17 @@ export const Dashboard = () => {
                         </div>
                       </div>
                       
-                      <div className="flex space-x-3">
+                      <div className="flex space-x-3 flex-col sm:flex-row gap-2">
                         <Link to={`/round/${round.id}`}>
                           <Button className="btn-golf-primary">
                             <Play className="h-4 w-4 mr-2" />
                             View Round
+                          </Button>
+                        </Link>
+                        <Link to={`/live-stream/${round.id}`}>
+                          <Button className="btn-golf-secondary">
+                            <Camera className="h-4 w-4 mr-2" />
+                            Live View
                           </Button>
                         </Link>
                       </div>
