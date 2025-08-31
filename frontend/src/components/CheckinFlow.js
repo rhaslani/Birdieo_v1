@@ -503,11 +503,12 @@ export const CheckinFlow = () => {
             </Card>
             
             {/* Camera Component */}
-            <CameraCapture
+            <EnhancedCameraCapture
               isOpen={cameraOpen}
               onClose={handleCameraClose}
               onCapture={handleCameraCapture}
               photoType={currentPhotoType}
+              roundId={roundId}
             />
           </>
         );
