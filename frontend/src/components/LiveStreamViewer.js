@@ -19,7 +19,7 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  const STREAM_URL = 'https://golf-birdieo.preview.emergentagent.com:8002';
+  const STREAM_URL = 'http://localhost:8002';
 
   useEffect(() => {
     checkStreamHealth();
