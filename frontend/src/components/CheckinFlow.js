@@ -208,6 +208,7 @@ export const CheckinFlow = () => {
       }
 
       const roundId = checkinResult.data.round_id;
+      setRoundId(roundId);
 
       // Step 2: Submit photos and clothing descriptor
       const photoResult = await apiRequest('POST', '/checkin/photos', {
