@@ -749,6 +749,110 @@ async def reset_hole1_video(current_user: User = Depends(get_current_user)):
         logger.error(f"Failed to reset Hole 1 videos: {e}")
         raise HTTPException(status_code=500, detail="Failed to reset Hole 1 videos")
 
+# Camera Processing Integration
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).parent.parent))
+
+from camera_processor import start_camera_processing, stop_camera_processing, get_camera_processor
+
+# Clips serving endpoint
+@api_router.get("/clips/files/{clip_id}")
+async def serve_clip_file(clip_id: str):
+    """Serve clip video files"""
+    from fastapi.responses import FileResponse
+    clip_path = f"/app/clips/{clip_id}.mp4"
+    if os.path.exists(clip_path):
+        return FileResponse(clip_path, media_type="video/mp4")
+    else:
+        raise HTTPException(status_code=404, detail="Clip not found")
+
+@api_router.get("/clips/poster/{clip_id}")
+async def serve_clip_poster(clip_id: str):
+    """Serve clip poster images"""
+    from fastapi.responses import FileResponse
+    poster_path = f"/app/clips/{clip_id}_poster.jpg"
+    if os.path.exists(poster_path):
+        return FileResponse(poster_path, media_type="image/jpeg")
+    else:
+        raise HTTPException(status_code=404, detail="Poster not found")
+
+# Camera processing control endpoints
+@api_router.get("/camera/status")
+async def get_camera_status(current_user: User = Depends(get_current_user)):
+    """Get camera processing status"""
+    processor = get_camera_processor()
+    if processor:
+        return {
+            "active": processor.is_running,
+            "stream_url": processor.stream_url,
+            "clips_created": len([f for f in os.listdir('/app/clips') if f.endswith('.mp4')]) if os.path.exists('/app/clips') else 0,
+            "last_motion_time": processor.shot_detector.last_motion_time
+        }
+    else:
+        return {"active": False, "message": "Camera processor not initialized"}
+
+@api_router.post("/camera/start")
+async def start_camera(current_user: User = Depends(get_current_user)):
+    """Start camera processing"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    
+    processor = start_camera_processing()
+    return {"message": "Camera processing started", "active": processor.is_running if processor else False}
+
+@api_router.post("/camera/stop")
+async def stop_camera(current_user: User = Depends(get_current_user)):
+    """Stop camera processing"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Insufficient permissions")
+    
+    stop_camera_processing()
+    return {"message": "Camera processing stopped"}
+
+@api_router.post("/rounds/{round_id}/activate")
+async def activate_round_for_recording(round_id: str, current_user: User = Depends(get_current_user)):
+    """Activate a round for automatic clip recording"""
+    # Verify round belongs to user
+    round_dict = await db.rounds.find_one({"id": round_id, "user_id": current_user.id})
+    if not round_dict:
+        raise HTTPException(status_code=404, detail="Round not found")
+    
+    # Update round status to active
+    await db.rounds.update_one(
+        {"id": round_id},
+        {"$set": {"status": RoundStatus.ACTIVE.value}}
+    )
+    
+    # Start camera processing if not already running
+    processor = get_camera_processor()
+    if not processor:
+        start_camera_processing()
+    
+    return {
+        "message": f"Round {round_id} activated for recording",
+        "status": "active",
+        "camera_processing": get_camera_processor().is_running if get_camera_processor() else False
+    }
+
+# Enhanced clips endpoint with auto-generated clips
+@api_router.get("/clips/{round_id}/auto")
+async def get_auto_generated_clips(round_id: str, current_user: User = Depends(get_current_user)):
+    """Get auto-generated clips for a round"""
+    # Verify round belongs to user
+    round_dict = await db.rounds.find_one({"id": round_id, "user_id": current_user.id})
+    if not round_dict:
+        raise HTTPException(status_code=404, detail="Round not found")
+    
+    clips_cursor = db.clips.find({
+        "round_id": round_id, 
+        "auto_generated": True,
+        "hole_number": 1
+    }).sort("published_at", -1)
+    clips = await clips_cursor.to_list(length=None)
+    
+    return [parse_from_mongo(clip) for clip in clips]
+
 # Include the router in the main app
 app.include_router(api_router)
 
