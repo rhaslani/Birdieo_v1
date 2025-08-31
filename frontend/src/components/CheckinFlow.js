@@ -26,6 +26,7 @@ export const CheckinFlow = () => {
   const [showVerification, setShowVerification] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [currentPhotoType, setCurrentPhotoType] = useState(null);
+  const [roundId, setRoundId] = useState(null);
   const [checkinData, setCheckinData] = useState({
     courseId: '',
     courseName: '',
