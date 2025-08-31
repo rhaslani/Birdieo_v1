@@ -5,7 +5,7 @@ import { Input } from './ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { CameraCapture } from './CameraCapture';
+import { EnhancedCameraCapture } from './EnhancedCameraCapture';
 import { useAuth } from '../App';
 import { 
   ArrowLeft, 
