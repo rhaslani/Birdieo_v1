@@ -190,6 +190,36 @@ function App() {
               } 
             />
             <Route 
+              path="/live-stream" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <LiveStreamViewer />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/live-stream/:roundId" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <LiveStreamViewer />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/camera-control" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <CameraControlPanel />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/round/:roundId" 
               element={
                 <ProtectedRoute>
