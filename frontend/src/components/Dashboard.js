@@ -135,11 +135,27 @@ export const Dashboard = () => {
           </Link>
           
           <Link to="/vision">
-            <Button className="btn-golf-secondary group">
+            <Button className="btn-golf-secondary group mr-4">
               <Eye className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
               AI Vision System
             </Button>
           </Link>
+          
+          <Link to="/live-stream">
+            <Button className="btn-golf-secondary group mr-4">
+              <Camera className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+              Live Stream
+            </Button>
+          </Link>
+          
+          {(user?.role === 'admin' || user?.role === 'course_manager') && (
+            <Link to="/camera-control">
+              <Button className="btn-golf-secondary group">
+                <Target className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                Camera Control
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Stats Cards */}
