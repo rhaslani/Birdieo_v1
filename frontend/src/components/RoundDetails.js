@@ -648,7 +648,7 @@ export const RoundDetails = () => {
                       </div>
                     )}
                   </>
-                )}
+              )}
             </div>
           </div>
           
