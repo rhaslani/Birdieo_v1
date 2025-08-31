@@ -22,6 +22,10 @@ load_dotenv()
 # Import Emergent LLM integration
 from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
 
+# Import photo handler
+sys.path.append(str(Path(__file__).parent))
+from photo_handler import get_photo_handler
+
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
