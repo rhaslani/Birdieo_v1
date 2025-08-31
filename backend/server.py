@@ -224,7 +224,7 @@ async def analyze_clothing_from_photo(photo_base64: str) -> ClothingAnalysisResu
             api_key=emergent_key,
             session_id=f"clothing_analysis_{uuid.uuid4()}",
             system_message="You are an expert at analyzing golf attire. Analyze the clothing in the image and return specific details about colors and styles suitable for golf player identification."
-        ).with_model("openai", "gpt-4o-mini")
+        ).with_model("openai", "gpt-4o")
         
         # Create image content from base64
         image_content = ImageContent(image_base64=photo_base64)
