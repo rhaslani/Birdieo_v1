@@ -13,6 +13,8 @@ import { Dashboard } from './components/Dashboard';
 import { CheckinFlow } from './components/CheckinFlow';
 import { RoundDetails } from './components/RoundDetails';
 import { VisionDashboard } from './components/ComputerVision/VisionDashboard';
+import { LiveStreamViewer } from './components/LiveStreamViewer';
+import { CameraControlPanel } from './components/CameraControlPanel';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
