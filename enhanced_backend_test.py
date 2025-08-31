@@ -8,7 +8,7 @@ from datetime import datetime, timezone, timedelta
 class EnhancedBirdieoAPITester:
     def __init__(self, base_url="https://golf-birdieo.preview.emergentagent.com/api"):
         self.base_url = base_url
-        self.stream_url = "https://golf-birdieo.preview.emergentagent.com:8002"
+        self.stream_url = "http://localhost:8002"
         self.token = None
         self.user_id = None
         self.round_id = None
