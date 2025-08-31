@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
@@ -6,7 +7,9 @@ import { Play, Pause, Video, Camera, Activity } from 'lucide-react';
 import { useAuth } from '../App';
 import { toast } from 'sonner';
 
-export const LiveStreamViewer = ({ roundId = null }) => {
+export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
+  const { roundId: paramRoundId } = useParams();
+  const roundId = propRoundId || paramRoundId;
   const { apiRequest } = useAuth();
   const [isLive, setIsLive] = useState(false);
   const [streamHealth, setStreamHealth] = useState(null);
