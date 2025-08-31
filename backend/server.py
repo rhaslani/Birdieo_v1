@@ -23,6 +23,8 @@ load_dotenv()
 from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
 
 # Import photo handler
+import sys
+from pathlib import Path
 sys.path.append(str(Path(__file__).parent))
 from photo_handler import get_photo_handler
 
