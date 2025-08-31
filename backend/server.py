@@ -857,6 +857,75 @@ async def get_auto_generated_clips(round_id: str, current_user: User = Depends(g
     
     return [parse_from_mongo(clip) for clip in clips]
 
+# Photo handling endpoints
+@api_router.post("/photos/save")
+async def save_photo(photo_data: dict, current_user: User = Depends(get_current_user)):
+    """Save a captured photo"""
+    try:
+        photo_handler = get_photo_handler()
+        
+        result = await photo_handler.save_photo(
+            photo_data=photo_data.get('photo_data'),
+            photo_type=photo_data.get('photo_type'),
+            round_id=photo_data.get('round_id'),
+            user_id=current_user.id
+        )
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error saving photo: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save photo")
+
+@api_router.post("/photos/analysis")
+async def save_photo_analysis(analysis_data: dict, current_user: User = Depends(get_current_user)):
+    """Save photo analysis results"""
+    try:
+        photo_handler = get_photo_handler()
+        
+        result = await photo_handler.save_analysis_results(
+            round_id=analysis_data.get('round_id'),
+            photo_type=analysis_data.get('photo_type'),
+            analysis_results=analysis_data.get('analysis_results')
+        )
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error saving photo analysis: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save analysis")
+
+@api_router.get("/photos/{round_id}")
+async def get_round_photos(round_id: str, current_user: User = Depends(get_current_user)):
+    """Get all photos for a round"""
+    try:
+        photo_handler = get_photo_handler()
+        
+        photos = await photo_handler.get_round_photos(round_id, current_user.id)
+        return photos
+        
+    except Exception as e:
+        logger.error(f"Error retrieving photos: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve photos")
+
+@api_router.get("/photos/{round_id}/clothing-analysis")
+async def get_clothing_analysis(round_id: str, current_user: User = Depends(get_current_user)):
+    """Get consolidated clothing analysis for a round"""
+    try:
+        # Verify round belongs to user
+        round_dict = await db.rounds.find_one({"id": round_id, "user_id": current_user.id})
+        if not round_dict:
+            raise HTTPException(status_code=404, detail="Round not found")
+            
+        photo_handler = get_photo_handler()
+        analysis = await photo_handler.get_clothing_analysis_summary(round_id)
+        
+        return analysis
+        
+    except Exception as e:
+        logger.error(f"Error getting clothing analysis: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get clothing analysis")
+
 # Include the router in the main app
 app.include_router(api_router)
 
