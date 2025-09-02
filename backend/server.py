@@ -1034,6 +1034,45 @@ async def get_clothing_analysis(round_id: str, current_user: User = Depends(get_
         logger.error(f"Error getting clothing analysis: {e}")
         raise HTTPException(status_code=500, detail="Failed to get clothing analysis")
 
+# Stream proxy endpoints to serve Lexington stream through our backend
+import requests as backend_requests
+import time
+from fastapi.responses import Response
+
+@api_router.get("/stream-proxy/health")
+async def stream_proxy_health():
+    """Proxy stream health endpoint"""
+    try:
+        response = backend_requests.get("http://localhost:8003/health", timeout=5)
+        return response.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
+@api_router.get("/stream-proxy/frame")
+async def stream_proxy_frame():
+    """Proxy stream frame endpoint"""
+    try:
+        response = backend_requests.get(f"http://localhost:8003/frame?t={int(time.time())}", timeout=10)
+        return Response(
+            content=response.content,
+            media_type="image/jpeg",
+            headers={
+                "Cache-Control": "no-cache, no-store, must-revalidate",
+                "Pragma": "no-cache"
+            }
+        )
+    except Exception as e:
+        raise HTTPException(status_code=503, detail=f"Stream not available: {str(e)}")
+
+@api_router.get("/stream-proxy/analyze")
+async def stream_proxy_analyze():
+    """Proxy stream analysis endpoint"""
+    try:
+        response = backend_requests.get("http://localhost:8003/analyze", timeout=10)
+        return response.json()
+    except Exception as e:
+        return {"ok": False, "error": str(e)}
+
 # Include the router in the main app
 app.include_router(api_router)
 
