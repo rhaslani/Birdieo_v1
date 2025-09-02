@@ -11,12 +11,20 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   const { roundId: paramRoundId } = useParams();
   const roundId = propRoundId || paramRoundId;
   const { apiRequest } = useAuth();
+  
+  // Define STREAM_URLS inside the component to avoid initialization issues
+  const STREAM_URLS = {
+    lexington_hole_1: 'http://localhost:8002',
+    lexington_proxy: 'http://localhost:8003',
+    external: 'https://www.lexingtongolfclub.net/live-stream/'
+  };
+  
   const [isLive, setIsLive] = useState(false);
   const [streamHealth, setStreamHealth] = useState(null);
   const [cameraStatus, setCameraStatus] = useState(null);
   const [autoClips, setAutoClips] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [activeStreamUrl, setActiveStreamUrl] = useState(STREAM_URLS.lexington_hole_1);
+  const [activeStreamUrl, setActiveStreamUrl] = useState(STREAM_URLS.lexington_proxy);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
