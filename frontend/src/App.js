@@ -222,6 +222,26 @@ function App() {
               } 
             />
             <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <AdminDashboard />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin/streams" 
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <AdminStreams />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/round/:roundId" 
               element={
                 <ProtectedRoute>
