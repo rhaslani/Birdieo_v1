@@ -227,7 +227,27 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
     setCapturedImage(null);
   };
 
-  const capturePhoto = () => {
+  const startCountdown = () => {
+    if (isCountingDown) return;
+    
+    setIsCountingDown(true);
+    setCountdown(5);
+    
+    countdownRef.current = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(countdownRef.current);
+          setIsCountingDown(false);
+          // Actually capture the photo after countdown
+          setTimeout(() => captureActualPhoto(), 100);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const captureActualPhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
     const video = videoRef.current;
@@ -244,7 +264,6 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
     // Convert to base64 with high quality
     const imageDataUrl = canvas.toDataURL('image/jpeg', 0.9);
     setCapturedImage(imageDataUrl);
-    setShowSilhouette(false);
     
     // Add camera shutter effect
     if (videoRef.current) {
@@ -257,6 +276,10 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
     }
     
     toast.success('Photo captured successfully!');
+  };
+
+  const capturePhoto = () => {
+    startCountdown();
   };
 
   const retakePhoto = () => {
