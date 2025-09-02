@@ -13,7 +13,8 @@ import {
   Zap,
   Users,
   Shield,
-  Activity
+  Activity,
+  Database
 } from 'lucide-react';
 import { useAuth } from '../App';
 import { toast } from 'sonner';
