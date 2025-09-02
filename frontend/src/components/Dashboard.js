@@ -149,12 +149,28 @@ export const Dashboard = () => {
           </Link>
           
           {(user?.role === 'admin' || user?.role === 'course_manager') && (
-            <Link to="/camera-control">
-              <Button className="btn-golf-secondary group">
-                <Target className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                Camera Control
-              </Button>
-            </Link>
+            <>
+              <Link to="/camera-control">
+                <Button className="btn-golf-secondary group mr-4">
+                  <Target className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Camera Control
+                </Button>
+              </Link>
+              
+              <Link to="/admin">
+                <Button className="btn-golf-primary group mr-4">
+                  <Database className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Admin Dashboard
+                </Button>
+              </Link>
+              
+              <Link to="/admin/streams">
+                <Button className="btn-golf-secondary group">
+                  <Activity className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
+                  Live Streams
+                </Button>
+              </Link>
+            </>
           )}
         </div>
 
