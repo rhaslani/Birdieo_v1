@@ -6,13 +6,13 @@ import { toast } from 'sonner';
 
 // Silhouette SVG components for user guidance
 const FaceSilhouette = () => (
-  <svg viewBox="0 0 200 200" className="w-32 h-32 text-emerald-300 opacity-60">
-    <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="5,5"/>
-    <circle cx="100" cy="80" r="40" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <circle cx="85" cy="70" r="4" fill="currentColor"/>
-    <circle cx="115" cy="70" r="4" fill="currentColor"/>
-    <path d="M85 90 Q100 100 115 90" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <text x="100" y="180" textAnchor="middle" className="text-xs fill-current">Face Photo</text>
+  <svg viewBox="0 0 200 200" className="w-96 h-96 text-emerald-300 opacity-80">
+    <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="8,8"/>
+    <circle cx="100" cy="80" r="40" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <circle cx="85" cy="70" r="6" fill="currentColor"/>
+    <circle cx="115" cy="70" r="6" fill="currentColor"/>
+    <path d="M85 90 Q100 105 115 90" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <text x="100" y="180" textAnchor="middle" className="text-sm fill-current font-bold">Face Photo</text>
   </svg>
 );
 
