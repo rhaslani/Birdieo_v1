@@ -240,14 +240,24 @@ export const AdminStreams = () => {
                 Real-time golf course monitoring with computer vision
               </p>
             </div>
-            <Button 
-              onClick={initializeStreams}
-              disabled={loading}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-              Refresh Streams
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                onClick={() => window.location.href = '/admin'}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Database className="h-4 w-4" />
+                Back to Admin
+              </Button>
+              <Button 
+                onClick={initializeStreams}
+                disabled={loading}
+                className="flex items-center gap-2"
+              >
+                <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                Refresh Streams
+              </Button>
+            </div>
           </div>
         </div>
 
