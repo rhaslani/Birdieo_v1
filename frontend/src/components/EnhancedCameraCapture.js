@@ -490,12 +490,26 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
                 <canvas ref={canvasRef} className="hidden" />
                 
                 {/* Silhouette Overlay */}
-                {showSilhouette && isStreaming && (
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="text-center">
+                {showSilhouette && isStreaming && !capturedImage && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black bg-opacity-20">
+                    <div className="flex flex-col items-center justify-center">
                       {getSilhouetteComponent(photoType)}
-                      <p className="text-white text-sm mt-2 bg-black bg-opacity-50 px-3 py-1 rounded">
+                      <p className="text-white text-lg mt-4 bg-black bg-opacity-70 px-6 py-2 rounded-lg font-semibold">
                         Align yourself with the guide
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Countdown Overlay */}
+                {isCountingDown && (
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none bg-black bg-opacity-50">
+                    <div className="text-center">
+                      <div className="text-8xl font-bold text-white mb-4 animate-pulse">
+                        {countdown}
+                      </div>
+                      <p className="text-white text-xl font-semibold">
+                        Get ready for your {photoType} photo!
                       </p>
                     </div>
                   </div>
