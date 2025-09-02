@@ -108,7 +108,7 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
 
   const triggerManualClip = async () => {
     try {
-      const response = await fetch(`${STREAM_URL}/trigger-clip`, { method: 'POST' });
+      const response = await fetch(`${activeStreamUrl}/trigger-clip`, { method: 'POST' });
       const data = await response.json();
       if (response.ok) {
         toast.success('Manual clip generation triggered');
