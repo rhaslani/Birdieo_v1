@@ -167,36 +167,40 @@ export const AdminStreams = () => {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Scale factor for responsive canvas
+    const scaleX = canvas.offsetWidth / canvas.width;
+    const scaleY = canvas.offsetHeight / canvas.height;
+
     // Draw people with blue boxes
     detectionData.people?.forEach((person, index) => {
       const { x, y, width, height } = person.bbox;
       
       ctx.strokeStyle = '#3B82F6'; // Blue
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 4;
       ctx.strokeRect(x, y, width, height);
       
       // Label with clothing info
-      ctx.fillStyle = '#3B82F6';
-      ctx.fillRect(x, y - 25, 120, 25);
+      ctx.fillStyle = 'rgba(59, 130, 246, 0.9)';
+      ctx.fillRect(x, y - 30, 140, 30);
       ctx.fillStyle = 'white';
-      ctx.font = '12px Arial';
-      ctx.fillText(`Person ${index + 1}: ${person.clothing.top_color}`, x + 5, y - 8);
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText(`👤 ${person.clothing?.top_color || 'Person'} ${person.clothing?.top_style || ''}`, x + 5, y - 10);
     });
 
     // Draw flagstick with red box
-    detectionData.flagstick?.forEach((flag) => {
+    detectionData.flagstick?.forEach((flag, index) => {
       const { x, y, width, height } = flag.bbox;
       
       ctx.strokeStyle = '#EF4444'; // Red
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 4;
       ctx.strokeRect(x, y, width, height);
       
       // Label
-      ctx.fillStyle = '#EF4444';
-      ctx.fillRect(x, y - 25, 80, 25);
+      ctx.fillStyle = 'rgba(239, 68, 68, 0.9)';
+      ctx.fillRect(x, y - 30, 100, 30);
       ctx.fillStyle = 'white';
-      ctx.font = '12px Arial';
-      ctx.fillText('Flagstick', x + 5, y - 8);
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText('🚩 Flagstick', x + 5, y - 10);
     });
 
     // Draw golf balls with yellow boxes
@@ -204,15 +208,15 @@ export const AdminStreams = () => {
       const { x, y, width, height } = ball.bbox;
       
       ctx.strokeStyle = '#EAB308'; // Yellow
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 4;
       ctx.strokeRect(x, y, width, height);
       
       // Label
-      ctx.fillStyle = '#EAB308';
-      ctx.fillRect(x, y - 25, 60, 25);
+      ctx.fillStyle = 'rgba(234, 179, 8, 0.9)';
+      ctx.fillRect(x, y - 30, 80, 30);
       ctx.fillStyle = 'white';
-      ctx.font = '12px Arial';
-      ctx.fillText(`Ball ${index + 1}`, x + 5, y - 8);
+      ctx.font = 'bold 14px Arial';
+      ctx.fillText(`⚪ Ball ${index + 1}`, x + 5, y - 10);
     });
   };
 
