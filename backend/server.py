@@ -858,35 +858,27 @@ async def get_all_rounds(current_user: User = Depends(get_current_user)):
     if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
         raise HTTPException(status_code=403, detail="Admin access required")
     
-    # Aggregate rounds with user information and clip counts
-    pipeline = [
-        {
-            "$lookup": {
-                "from": "users",
-                "localField": "user_id",
-                "foreignField": "id",
-                "as": "user_info"
-            }
-        },
-        {
-            "$lookup": {
-                "from": "clips",
-                "localField": "id",
-                "foreignField": "round_id",
-                "as": "clips"
-            }
-        },
-        {
-            "$addFields": {
-                "user_name": {"$arrayElemAt": ["$user_info.name", 0]},
-                "clip_count": {"$size": "$clips"}
-            }
-        },
-        {"$sort": {"created_at": -1}}
-    ]
+    # Get rounds simply first
+    rounds_cursor = db.rounds.find({}).sort("created_at", -1)
+    rounds = await rounds_cursor.to_list(length=None)
     
-    rounds = await db.rounds.aggregate(pipeline).to_list(length=None)
-    return [parse_from_mongo(round_data) for round_data in rounds]
+    # Manually add user names and clip counts
+    enhanced_rounds = []
+    for round_data in rounds:
+        # Get user info
+        user = await db.users.find_one({"id": round_data.get("user_id")})
+        user_name = user["name"] if user else "Unknown"
+        
+        # Get clip count
+        clip_count = await db.clips.count_documents({"round_id": round_data.get("id")})
+        
+        # Add extra fields
+        round_data["user_name"] = user_name
+        round_data["clip_count"] = clip_count
+        
+        enhanced_rounds.append(parse_from_mongo(round_data))
+    
+    return enhanced_rounds
 
 @api_router.get("/admin/clothing")
 async def get_all_clothing_analysis(current_user: User = Depends(get_current_user)):
