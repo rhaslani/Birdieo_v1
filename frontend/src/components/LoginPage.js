@@ -68,8 +68,8 @@ export const LoginPage = () => {
                   <Input
                     id="email"
                     type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={loginData.email}
+                    onChange={(e) => setLoginData({...loginData, email: e.target.value})}
                     className="golf-input pl-12"
                     placeholder="Enter your email"
                     required
