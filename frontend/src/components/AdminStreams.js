@@ -111,33 +111,37 @@ export const AdminStreams = () => {
   const startDetectionAnalysis = async (streamId, streamUrl) => {
     const analyzeFrame = async () => {
       try {
-        const response = await fetch(`${streamUrl}/analyze`);
+        const analyzeUrl = streamUrl === '/api/stream-proxy' ? '/api/stream-proxy/analyze' : `${streamUrl}/analyze`;
+        const response = await fetch(analyzeUrl);
         const analysis = await response.json();
         
-        if (analysis.ok) {
-          // Simulate AI detection results
+        if (analysis.ok && analysis.detections) {
+          // Use real detection data from our proxy
+          setDetections(prev => ({ ...prev, [streamId]: analysis.detections }));
+        } else if (analysis.ok) {
+          // Fallback to mock data for demo
           const mockDetections = {
             people: [
               {
-                id: 'person_1',
+                id: 'golfer_1',
                 bbox: { x: 150, y: 100, width: 80, height: 200 },
                 clothing: {
                   top_color: 'blue',
                   top_style: 'polo',
-                  bottom_color: 'khaki'
+                  bottom_color: 'white'
                 },
                 confidence: 0.85
               }
             ],
             flagstick: [
               {
-                bbox: { x: 300, y: 50, width: 10, height: 150 },
+                bbox: { x: 450, y: 50, width: 8, height: 120 },
                 confidence: 0.92
               }
             ],
             golf_balls: [
               {
-                bbox: { x: 200, y: 250, width: 15, height: 15 },
+                bbox: { x: 300, y: 280, width: 12, height: 12 },
                 confidence: 0.78
               }
             ]
@@ -150,8 +154,8 @@ export const AdminStreams = () => {
       }
     };
 
-    // Run analysis every 2 seconds
-    const interval = setInterval(analyzeFrame, 2000);
+    // Run analysis every 3 seconds
+    const interval = setInterval(analyzeFrame, 3000);
     
     // Store interval for cleanup
     return () => clearInterval(interval);
