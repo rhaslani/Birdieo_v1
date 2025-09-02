@@ -66,11 +66,14 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
   const [facingMode, setFacingMode] = useState('user');
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSilhouette, setShowSilhouette] = useState(true);
+  const [countdown, setCountdown] = useState(0);
+  const [isCountingDown, setIsCountingDown] = useState(false);
   
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
   const timeoutRef = useRef(null);
+  const countdownRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
