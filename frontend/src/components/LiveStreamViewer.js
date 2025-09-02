@@ -28,12 +28,6 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  const STREAM_URLS = {
-    lexington_hole_1: 'http://localhost:8002',
-    lexington_proxy: 'http://localhost:8003',
-    external: 'https://www.lexingtongolfclub.net/live-stream/'
-  };
-
   useEffect(() => {
     checkStreamHealth();
     getCameraStatus();
