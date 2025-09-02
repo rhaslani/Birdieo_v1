@@ -12,7 +12,8 @@ import {
   Eye,
   Play,
   Shield,
-  Database
+  Database,
+  Activity
 } from 'lucide-react';
 import { useAuth } from '../App';
 import { toast } from 'sonner';
