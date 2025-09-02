@@ -285,7 +285,8 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
   const retakePhoto = () => {
     setCapturedImage(null);
     setShowSilhouette(true);
-    setTimeout(() => setShowSilhouette(false), 3000);
+    setCountdown(0);
+    setIsCountingDown(false);
   };
 
   const confirmPhoto = async () => {
