@@ -535,10 +535,15 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
                     
                     <Button
                       onClick={capturePhoto}
-                      className="bg-emerald-600 hover:bg-emerald-700 rounded-full p-4 shadow-lg"
-                      title="Take Photo"
+                      disabled={isCountingDown}
+                      className="bg-emerald-600 hover:bg-emerald-700 disabled:bg-gray-500 rounded-full p-4 shadow-lg"
+                      title={isCountingDown ? "Taking Photo..." : "Take Photo (5s Timer)"}
                     >
-                      <Camera className="h-6 w-6 text-white" />
+                      {isCountingDown ? (
+                        <span className="text-white text-lg font-bold">{countdown}</span>
+                      ) : (
+                        <Camera className="h-6 w-6 text-white" />
+                      )}
                     </Button>
                   </div>
                 )}
