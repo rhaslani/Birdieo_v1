@@ -301,17 +301,17 @@ export const AdminStreams = () => {
                             // Retry loading
                             setTimeout(() => {
                               e.target.src = `${stream.url}/frame?t=${Date.now()}`;
-                            }, 1000);
+                            }, 2000);
                           }}
                         />
                       ) : (
-                        <iframe
-                          src={stream.url}
-                          title={stream.name}
-                          className="w-full h-full"
-                          frameBorder="0"
-                          allowFullScreen
-                        />
+                        <div className="w-full h-full flex items-center justify-center bg-gray-800 text-white">
+                          <div className="text-center">
+                            <Camera className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                            <p className="text-lg font-semibold mb-2">External Stream</p>
+                            <p className="text-sm opacity-75">Coming Soon</p>
+                          </div>
+                        </div>
                       )}
                       
                       {/* Detection Overlay Canvas */}
