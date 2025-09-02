@@ -15,6 +15,8 @@ import { RoundDetails } from './components/RoundDetails';
 import { VisionDashboard } from './components/ComputerVision/VisionDashboard';
 import { LiveStreamViewer } from './components/LiveStreamViewer';
 import { CameraControlPanel } from './components/CameraControlPanel';
+import { AdminDashboard } from './components/AdminDashboard';
+import { AdminStreams } from './components/AdminStreams';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
