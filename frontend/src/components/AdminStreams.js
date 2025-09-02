@@ -32,7 +32,7 @@ export const AdminStreams = () => {
     {
       id: 'lexington_hole_1',
       name: 'Lexington Golf Club - Hole 1',
-      url: 'https://golf-birdieo.preview.emergentagent.com:8003',
+      url: '/api/stream-proxy',
       description: 'Tee box and fairway view',
       status: 'active'
     },
