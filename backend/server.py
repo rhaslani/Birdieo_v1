@@ -1037,8 +1037,8 @@ async def get_clothing_analysis(round_id: str, current_user: User = Depends(get_
         logger.error(f"Error getting clothing analysis: {e}")
         raise HTTPException(status_code=500, detail="Failed to get clothing analysis")
 
-# Stream proxy endpoints to serve Lexington stream through our backend
-@api_router.get("/stream-proxy/health")
+# Stream proxy endpoints to serve Lexington stream through our backend (no auth required)
+@app.get("/api/stream-proxy/health")
 async def stream_proxy_health():
     """Proxy stream health endpoint"""
     try:
@@ -1047,7 +1047,7 @@ async def stream_proxy_health():
     except Exception as e:
         return {"ok": False, "error": str(e)}
 
-@api_router.get("/stream-proxy/frame")
+@app.get("/api/stream-proxy/frame")
 async def stream_proxy_frame():
     """Proxy stream frame endpoint"""
     try:
@@ -1063,7 +1063,7 @@ async def stream_proxy_frame():
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Stream not available: {str(e)}")
 
-@api_router.get("/stream-proxy/analyze")
+@app.get("/api/stream-proxy/analyze")
 async def stream_proxy_analyze():
     """Proxy stream analysis endpoint"""
     try:
