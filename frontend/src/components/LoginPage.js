@@ -61,6 +61,45 @@ export const LoginPage = () => {
           
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* User Type Selection */}
+              <div className="space-y-3">
+                <label className="text-emerald-700 font-medium block">
+                  Login As
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setLoginData({...loginData, userType: 'user'})}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      loginData.userType === 'user'
+                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-emerald-300'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">👤</div>
+                      <div className="font-medium">User</div>
+                      <div className="text-xs opacity-75">Golf player access</div>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLoginData({...loginData, userType: 'admin'})}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      loginData.userType === 'admin'
+                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                        : 'border-gray-200 bg-white text-gray-600 hover:border-emerald-300'
+                    }`}
+                  >
+                    <div className="text-center">
+                      <div className="text-2xl mb-2">👨‍💼</div>
+                      <div className="font-medium">Admin</div>
+                      <div className="text-xs opacity-75">Full system access</div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-emerald-800 font-medium">Email</Label>
                 <div className="relative">
