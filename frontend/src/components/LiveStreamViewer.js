@@ -76,7 +76,7 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   const startLiveStream = () => {
     if (videoRef.current && !isLive) {
       // Use MJPEG stream for real-time viewing
-      videoRef.current.src = `${STREAM_URL}/stream.mjpg`;
+      videoRef.current.src = `${activeStreamUrl}/stream.mjpg?t=${Date.now()}`;
       setIsLive(true);
       toast.success('Live stream started');
     }
