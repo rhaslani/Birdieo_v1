@@ -84,8 +84,8 @@ export const LoginPage = () => {
                   <Input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={loginData.password}
+                    onChange={(e) => setLoginData({...loginData, password: e.target.value})}
                     className="golf-input pl-12 pr-12"
                     placeholder="Enter your password"
                     required
