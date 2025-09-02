@@ -16,6 +16,7 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   const [cameraStatus, setCameraStatus] = useState(null);
   const [autoClips, setAutoClips] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [activeStreamUrl, setActiveStreamUrl] = useState(STREAM_URLS.lexington_hole_1);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
