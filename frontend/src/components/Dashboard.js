@@ -17,7 +17,9 @@ import {
   Award,
   Camera,
   Eye,
-  Target
+  Target,
+  Database,
+  Activity
 } from 'lucide-react';
 
 export const Dashboard = () => {
