@@ -28,7 +28,7 @@ export const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const result = await login(email, password);
+    const result = await login(loginData.email, loginData.password);
     if (result.success) {
       navigate('/');
     }
