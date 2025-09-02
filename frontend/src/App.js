@@ -70,7 +70,7 @@ const AuthProvider = ({ children }) => {
       setUser(userData);
       
       toast.success('Login successful!');
-      return { success: true };
+      return { success: true, user: userData };
     } catch (error) {
       const message = error.response?.data?.detail || 'Login failed';
       toast.error(message);
