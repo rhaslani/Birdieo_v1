@@ -30,7 +30,12 @@ export const LoginPage = () => {
     
     const result = await login(loginData.email, loginData.password);
     if (result.success) {
-      navigate('/');
+      // Redirect based on user type selection and actual user role
+      if (loginData.userType === 'admin' && (result.user?.role === 'admin' || result.user?.role === 'course_manager')) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }
     
     setLoading(false);
