@@ -151,9 +151,9 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         
-        // Wait for video to be ready
+        // Wait for video to be ready - extend timeout to prevent 5-second error
         await new Promise((resolve, reject) => {
-          const timeoutId = setTimeout(() => reject(new Error('Video load timeout')), 10000);
+          const timeoutId = setTimeout(() => reject(new Error('Video load timeout')), 20000); // Increased to 20 seconds
           
           videoRef.current.onloadedmetadata = () => {
             clearTimeout(timeoutId);
@@ -175,18 +175,21 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
       console.error('Error accessing camera:', err);
       setIsStreaming(false);
       
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        setPermissionState('denied');
-        setError('Camera permission denied. Please allow camera access to take photos.');
-      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        setError('No camera found on this device. Please check your camera connection.');
-      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
-        setError('Camera is being used by another application. Please close other apps using the camera.');
-      } else if (err.name === 'OverconstrainedError') {
-        setError('Camera configuration not supported. Trying with basic settings...');
-        retryWithBasicConstraints();
-      } else {
-        setError(err.message || 'Failed to access camera. Please check your camera and permissions.');
+      // Only show errors that are actually actionable, not timeout errors during loading
+      if (err.message !== 'Video load timeout') {
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+          setPermissionState('denied');
+          setError('Camera permission denied. Please allow camera access to take photos.');
+        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+          setError('No camera found on this device. Please check your camera connection.');
+        } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+          setError('Camera is being used by another application. Please close other apps using the camera.');
+        } else if (err.name === 'OverconstrainedError') {
+          setError('Camera configuration not supported. Trying with basic settings...');
+          retryWithBasicConstraints();
+        } else {
+          setError(err.message || 'Failed to access camera. Please check your camera and permissions.');
+        }
       }
     }
   };
