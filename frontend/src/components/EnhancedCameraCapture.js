@@ -17,13 +17,13 @@ const FaceSilhouette = () => (
 );
 
 const FrontSilhouette = () => (
-  <svg viewBox="0 0 200 200" className="w-32 h-32 text-emerald-300 opacity-60">
-    <rect x="70" y="40" width="60" height="120" rx="30" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="5,5"/>
-    <circle cx="100" cy="60" r="15" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <rect x="85" y="80" width="30" height="40" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <rect x="75" y="125" width="20" height="35" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <rect x="105" y="125" width="20" height="35" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <text x="100" y="180" textAnchor="middle" className="text-xs fill-current">Front View</text>
+  <svg viewBox="0 0 200 200" className="w-96 h-96 text-emerald-300 opacity-80">
+    <rect x="70" y="40" width="60" height="120" rx="30" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="8,8"/>
+    <circle cx="100" cy="60" r="15" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <rect x="85" y="80" width="30" height="40" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <rect x="75" y="125" width="20" height="35" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <rect x="105" y="125" width="20" height="35" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <text x="100" y="180" textAnchor="middle" className="text-sm fill-current font-bold">Front View</text>
   </svg>
 );
 
