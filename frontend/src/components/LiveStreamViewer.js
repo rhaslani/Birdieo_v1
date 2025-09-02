@@ -14,8 +14,8 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
   
   // Define STREAM_URLS inside the component to avoid initialization issues
   const STREAM_URLS = {
-    lexington_hole_1: 'https://golf-birdieo.preview.emergentagent.com:8003',
-    lexington_proxy: 'https://golf-birdieo.preview.emergentagent.com:8003',
+    lexington_hole_1: '/api/stream-proxy',
+    lexington_proxy: '/api/stream-proxy',
     external: 'https://www.lexingtongolfclub.net/live-stream/'
   };
   
