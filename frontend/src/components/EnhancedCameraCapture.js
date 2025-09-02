@@ -78,16 +78,18 @@ export const EnhancedCameraCapture = ({ isOpen, onClose, onCapture, photoType, r
   useEffect(() => {
     if (isOpen) {
       checkCameraPermission();
-      // Auto-hide silhouette after 3 seconds
-      setTimeout(() => setShowSilhouette(false), 3000);
+      // Keep silhouette visible - don't auto-hide
+      setShowSilhouette(true);
     } else {
       stopCamera();
       clearTimeout(timeoutRef.current);
+      clearInterval(countdownRef.current);
     }
     
     return () => {
       stopCamera();
       clearTimeout(timeoutRef.current);
+      clearInterval(countdownRef.current);
     };
   }, [isOpen]);
 
