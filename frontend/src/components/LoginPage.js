@@ -8,8 +8,11 @@ import { useAuth } from '../App';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 
 export const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+    userType: 'user' // 'user' or 'admin'
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
