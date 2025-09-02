@@ -1038,10 +1038,6 @@ async def get_clothing_analysis(round_id: str, current_user: User = Depends(get_
         raise HTTPException(status_code=500, detail="Failed to get clothing analysis")
 
 # Stream proxy endpoints to serve Lexington stream through our backend
-import requests as backend_requests
-import time
-from fastapi.responses import Response
-
 @api_router.get("/stream-proxy/health")
 async def stream_proxy_health():
     """Proxy stream health endpoint"""
