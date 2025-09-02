@@ -841,6 +841,120 @@ async def activate_round_for_recording(round_id: str, current_user: User = Depen
         "camera_processing": get_camera_processor().is_running if get_camera_processor() else False
     }
 
+# Admin endpoints for data management
+@api_router.get("/admin/users")
+async def get_all_users(current_user: User = Depends(get_current_user)):
+    """Get all users - Admin only"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    users_cursor = db.users.find({}).sort("created_at", -1)
+    users = await users_cursor.to_list(length=None)
+    return [parse_from_mongo(user) for user in users]
+
+@api_router.get("/admin/rounds")
+async def get_all_rounds(current_user: User = Depends(get_current_user)):
+    """Get all rounds - Admin only"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Aggregate rounds with user information and clip counts
+    pipeline = [
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "user_id",
+                "foreignField": "id",
+                "as": "user_info"
+            }
+        },
+        {
+            "$lookup": {
+                "from": "clips",
+                "localField": "id",
+                "foreignField": "round_id",
+                "as": "clips"
+            }
+        },
+        {
+            "$addFields": {
+                "user_name": {"$arrayElemAt": ["$user_info.name", 0]},
+                "clip_count": {"$size": "$clips"}
+            }
+        },
+        {"$sort": {"created_at": -1}}
+    ]
+    
+    rounds = await db.rounds.aggregate(pipeline).to_list(length=None)
+    return [parse_from_mongo(round_data) for round_data in rounds]
+
+@api_router.get("/admin/clothing")
+async def get_all_clothing_analysis(current_user: User = Depends(get_current_user)):
+    """Get all clothing analysis - Admin only"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Get clothing analysis from photos collection
+    pipeline = [
+        {
+            "$match": {
+                "photo_type": {"$in": ["front", "side", "back"]},
+                "processed": True,
+                "analysis_results": {"$ne": None}
+            }
+        },
+        {
+            "$lookup": {
+                "from": "rounds",
+                "localField": "round_id",
+                "foreignField": "id",
+                "as": "round_info"
+            }
+        },
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "user_id",
+                "foreignField": "id",
+                "as": "user_info"
+            }
+        },
+        {
+            "$group": {
+                "_id": "$round_id",
+                "round_id": {"$first": "$round_id"},
+                "user_id": {"$first": "$user_id"},
+                "user_name": {"$first": {"$arrayElemAt": ["$user_info.name", 0]}},
+                "analyses": {"$push": "$analysis_results"},
+                "analyzed_at": {"$max": "$analyzed_at"},
+                "analysis_count": {"$sum": 1}
+            }
+        },
+        {
+            "$addFields": {
+                "top_color": {"$arrayElemAt": ["$analyses.top_color", 0]},
+                "top_style": {"$arrayElemAt": ["$analyses.top_style", 0]},
+                "bottom_color": {"$arrayElemAt": ["$analyses.bottom_color", 0]},
+                "hat_color": {"$arrayElemAt": ["$analyses.hat_color", 0]},
+                "confidence": {"$avg": "$analyses.confidence"}
+            }
+        },
+        {"$sort": {"analyzed_at": -1}}
+    ]
+    
+    clothing_data = await db.photos.aggregate(pipeline).to_list(length=None)
+    return [parse_from_mongo(item) for item in clothing_data]
+
+@api_router.get("/admin/clips")
+async def get_all_clips(current_user: User = Depends(get_current_user)):
+    """Get all clips - Admin only"""
+    if current_user.role != UserRole.ADMIN and current_user.role != UserRole.COURSE_MANAGER:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    clips_cursor = db.clips.find({}).sort("published_at", -1)
+    clips = await clips_cursor.to_list(length=None)
+    return [parse_from_mongo(clip) for clip in clips]
+
 # Enhanced clips endpoint with auto-generated clips
 @api_router.get("/clips/{round_id}/auto")
 async def get_auto_generated_clips(round_id: str, current_user: User = Depends(get_current_user)):
