@@ -28,12 +28,12 @@ const FrontSilhouette = () => (
 );
 
 const SideSilhouette = () => (
-  <svg viewBox="0 0 200 200" className="w-32 h-32 text-emerald-300 opacity-60">
-    <path d="M80 40 Q90 45 90 60 L90 120 Q85 140 85 160" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="5,5"/>
-    <circle cx="85" cy="60" r="12" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <rect x="85" y="80" width="25" height="35" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <rect x="85" y="120" width="15" height="40" fill="none" stroke="currentColor" strokeWidth="2"/>
-    <text x="100" y="180" textAnchor="middle" className="text-xs fill-current">Side Profile</text>
+  <svg viewBox="0 0 200 200" className="w-96 h-96 text-emerald-300 opacity-80">
+    <path d="M80 40 Q90 45 90 60 L90 120 Q85 140 85 160" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="8,8"/>
+    <circle cx="85" cy="60" r="12" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <rect x="85" y="80" width="25" height="35" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <rect x="85" y="120" width="15" height="40" fill="none" stroke="currentColor" strokeWidth="3"/>
+    <text x="100" y="180" textAnchor="middle" className="text-sm fill-current font-bold">Side Profile</text>
   </svg>
 );
 
