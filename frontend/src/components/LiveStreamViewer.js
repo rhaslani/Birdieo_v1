@@ -44,11 +44,15 @@ export const LiveStreamViewer = ({ roundId: propRoundId = null }) => {
 
   const checkStreamHealth = async () => {
     try {
-      const response = await fetch(`${STREAM_URL}/health`);
+      const response = await fetch(`${activeStreamUrl}/health`);
       const data = await response.json();
       setStreamHealth(data);
     } catch (error) {
       console.error('Failed to check stream health:', error);
+      // Try backup stream
+      if (activeStreamUrl === STREAM_URLS.lexington_hole_1) {
+        setActiveStreamUrl(STREAM_URLS.lexington_proxy);
+      }
       setStreamHealth({ ok: false, error: error.message });
     }
   };
